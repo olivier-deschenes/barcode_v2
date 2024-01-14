@@ -1,39 +1,36 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import {
-  Outlet,
   RouterProvider,
   Router,
   Route,
   RootRoute,
+  lazyRouteComponent,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import "./index.css";
 import "./App.css";
-import App from "./App";
-import { Generate } from "./pages/generate/Generate";
 
 const rootRoute = new RootRoute({
-  component: () => (
-    <div className={"flex flex-col print:bg-transparent print:bg-none"}>
-      <Outlet />
-      <div className={"print:hidden"}>
-        <TanStackRouterDevtools />
-      </div>
-    </div>
-  ),
+  component: lazyRouteComponent(() => import("./Index"), "Index"),
 });
 
 const indexRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => <App />,
+  component: lazyRouteComponent(() => import("./App")),
 });
 
 const generateRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "/generate",
-  component: () => <Generate />,
+  component: lazyRouteComponent(
+    () => import("./pages/generate/Generate"),
+    "Generate"
+  ),
+  errorComponent: lazyRouteComponent(
+    () => import("./components/Error"),
+    "Error"
+  ),
 });
 
 const routeTree = rootRoute.addChildren([indexRoute, generateRoute]);

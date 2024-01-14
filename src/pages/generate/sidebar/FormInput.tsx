@@ -1,6 +1,6 @@
 import React from "react";
 import { Textarea } from "../../../components/ui/textarea";
-import { Barcode, useBarcodesStore } from "../../../stores/barcodes";
+import { BarcodeType, useBarcodesStore } from "../../../stores/barcodes";
 
 export function FormInput() {
   const addBarcode = useBarcodesStore((s) => s.addBarcode);
@@ -9,7 +9,7 @@ export function FormInput() {
 
   const handleAddBarcode = () => {
     const lines = value.split("\n");
-    const barcodes: Barcode[] = lines.map((line) => {
+    const barcodes: BarcodeType[] = lines.map((line) => {
       const data = line.split(":");
 
       return {
@@ -23,6 +23,8 @@ export function FormInput() {
     if (barcodes.length < 1) return;
 
     addBarcode(barcodes[0]);
+
+    setValue("");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,9 +52,14 @@ export function FormInput() {
   };
 
   return (
-    <div>
+    <div className={"w-full p-5"}>
       <form onSubmit={handleSubmit}>
-        <Textarea onKeyDown={hanldeKeyDown} onChange={handleChange}></Textarea>
+        <Textarea
+          onKeyDown={hanldeKeyDown}
+          onChange={handleChange}
+          placeholder={"Enter the barcodes ..."}
+          value={value}
+        ></Textarea>
       </form>
     </div>
   );

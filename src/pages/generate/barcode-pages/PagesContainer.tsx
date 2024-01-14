@@ -4,7 +4,6 @@ import React from "react";
 
 export function PagesContainer() {
   const setActivePageId = useBarcodesStore((s) => s.setActivePageId);
-  const activePageId = useBarcodesStore((s) => s.activePageId);
   const pages = useBarcodesStore((s) => s.pages);
 
   const pageContainerRef = React.useRef<HTMLDivElement>(null);

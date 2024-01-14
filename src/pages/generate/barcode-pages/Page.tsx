@@ -1,12 +1,11 @@
 import { twJoin } from "tailwind-merge";
-import { Barcode } from "./Barcode";
-import { BarcodePage, useBarcodesStore } from "../../../stores/barcodes";
-import { Spacer } from "./Spacer";
+import { BarcodePageType, useBarcodesStore } from "../../../stores/barcodes";
 import React from "react";
+import { BarcodeItem } from "./Barcode";
 
 type Props = {
   isLastPage: boolean;
-  page: BarcodePage;
+  page: BarcodePageType;
 };
 
 export function Page({ isLastPage, page }: Props) {
@@ -16,14 +15,14 @@ export function Page({ isLastPage, page }: Props) {
   React.useEffect(() => {
     if (!pageRef.current || page.id !== activePageId) return;
 
-    console.log("scrolling to page", page.id);
+    //console.log("scrolling to page", page.id);
 
     pageRef.current.scrollIntoView({ behavior: "smooth" });
   }, [activePageId, page.id]);
 
   return (
     <div
-      className={"flex shrink-0 h-screen print:h-auto snap-center bg-red-50"}
+      className={"flex shrink-0 h-screen print:h-auto snap-center"}
       data-page-id={page.id}
       ref={pageRef}
     >
@@ -33,15 +32,8 @@ export function Page({ isLastPage, page }: Props) {
           !isLastPage && "break-after-page"
         )}
       >
-        {page.barcodes.map((barcode, i) => {
-          switch (barcode.type) {
-            case "CODE_128":
-              return (
-                <Barcode key={barcode.id} value={`${i}`} id={barcode.id} />
-              );
-            case "SPACER":
-              return <Spacer key={barcode.id} value={`${i}`} id={barcode.id} />;
-          }
+        {page.barcodes.map((barcode) => {
+          return <BarcodeItem key={barcode.id} barcode={barcode} />;
         })}
       </div>
     </div>

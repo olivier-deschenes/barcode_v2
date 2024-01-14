@@ -1,44 +1,54 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export type IBarcode = {
+export type BaseBarcode = {
   id: string;
   value: string;
   title?: string;
 };
 
-export type Code128 = IBarcode & {
+export type Code128Type = BaseBarcode & {
   type: "CODE_128";
 };
 
-export type Spacer = {
+export type SpacerType = {
   id: string;
   type: "SPACER";
 };
 
-export type Barcode = Code128 | Spacer;
+export type BarcodeType = Code128Type | SpacerType;
 
-export type BarcodePage = {
+export type BarcodePageType = {
   id: string;
-  barcodes: Barcode[];
+  barcodes: BarcodeType[];
 };
 
 interface BarcodesState {
-  pages: BarcodePage[];
-  activePageId: BarcodePage["id"];
+  pages: BarcodePageType[];
+  activePageId: BarcodePageType["id"];
 
-  addPage: (page: BarcodePage) => void;
-  addBarcode: (barcode: Barcode) => void;
+  addPage: (page: BarcodePageType) => void;
+  addBarcode: (barcode: BarcodeType) => void;
 
-  setActivePageId: (id: BarcodePage["id"]) => void;
-  getActivePage: () => BarcodePage;
+  setActivePageId: (id: BarcodePageType["id"]) => void;
+  getActivePage: () => BarcodePageType;
+
+  getIndexedFromId: (barcodeId: BarcodePageType["id"]) => {
+    pageIndex: number;
+    pageCount: number;
+    barcodeIndex: number;
+    barcodeCount: number;
+  };
+  getBarcodeFromId: (barcodeId: BarcodeType["id"]) => BarcodeType;
+
+  swapBarcodes: (fromId: BarcodeType["id"], tooId: BarcodeType["id"]) => void;
 
   reset: () => void;
 }
 
 export const createBarcodePage = () => {
   const barcodes = new Array(10).fill(null).map(() => {
-    const spacer: Spacer = {
+    const spacer: SpacerType = {
       id: crypto.randomUUID(),
       type: "SPACER",
     };
@@ -46,7 +56,7 @@ export const createBarcodePage = () => {
     return spacer;
   });
 
-  const page: BarcodePage = {
+  const page: BarcodePageType = {
     id: crypto.randomUUID(),
     barcodes,
   };
@@ -124,6 +134,66 @@ export const useBarcodesStore = create<BarcodesState>()(
           const defaultPage = createBarcodePage();
 
           set({ pages: [defaultPage], activePageId: defaultPage.id });
+        },
+        getIndexedFromId: (barcodeId) => {
+          const _state = state();
+
+          for (
+            let pageIndex = 0;
+            pageIndex < _state.pages.length;
+            pageIndex++
+          ) {
+            const page = _state.pages[pageIndex];
+            const barcodeIndex = page.barcodes.findIndex(
+              (b) => b.id === barcodeId
+            );
+
+            if (barcodeIndex !== -1) {
+              return {
+                pageIndex,
+                pageCount: _state.pages.length,
+                barcodeIndex,
+                barcodeCount: page.barcodes.length,
+              };
+            }
+          }
+
+          throw new Error("Barcode not found");
+        },
+        swapBarcodes: (fromId, tooId) => {
+          set((state) => {
+            const from = state.getIndexedFromId(fromId);
+            const too = state.getIndexedFromId(tooId);
+
+            const pages = [...state.pages];
+
+            const fromPage = pages[from.pageIndex];
+            const tooPage = pages[too.pageIndex];
+
+            const fromBarcode = fromPage.barcodes[from.barcodeIndex];
+            const tooBarcode = tooPage.barcodes[too.barcodeIndex];
+
+            fromPage.barcodes[from.barcodeIndex] = tooBarcode;
+            tooPage.barcodes[too.barcodeIndex] = fromBarcode;
+
+            pages[from.pageIndex] = fromPage;
+            pages[too.pageIndex] = tooPage;
+
+            return {
+              pages,
+            };
+          });
+        },
+        getBarcodeFromId: (barcodeId) => {
+          const _state = state();
+
+          const { pageIndex, barcodeIndex } =
+            _state.getIndexedFromId(barcodeId);
+
+          const page = _state.pages[pageIndex];
+          const barcode = page.barcodes[barcodeIndex];
+
+          return barcode;
         },
       };
     },

@@ -1,7 +1,33 @@
-import { PagesContainer } from "./barcodes/PagesContainer";
+import React from "react";
+import { PagesContainer } from "./barcode-pages/PagesContainer";
 import { Sidebar } from "./sidebar/Sidebar";
+import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core";
+import { BarcodeType, useBarcodesStore } from "../../stores/barcodes";
+import { BarcodeItem } from "./barcode-pages/Barcode";
+import { Barcode128 } from "./barcode-pages/barcodes/Barcode128";
 
 export function Generate() {
+  const swapBarcodes = useBarcodesStore((s) => s.swapBarcodes);
+  const getBarcodeFromId = useBarcodesStore((s) => s.getBarcodeFromId);
+
+  const [dragginBarcode, setDragginBarcode] =
+    React.useState<BarcodeType | null>(null);
+
+  const onDragEnd = React.useCallback(
+    (e: DragEndEvent) => {
+      const fromBarcodeId = e.active.id;
+
+      setDragginBarcode(getBarcodeFromId(String(fromBarcodeId)));
+
+      const toSpacerId = e.over?.id;
+
+      if (!toSpacerId) return;
+
+      swapBarcodes(String(fromBarcodeId), String(toSpacerId));
+    },
+    [getBarcodeFromId, swapBarcodes]
+  );
+
   return (
     <div
       className={
@@ -9,7 +35,14 @@ export function Generate() {
       }
     >
       <Sidebar />
-      <PagesContainer />
+      <DndContext onDragEnd={onDragEnd}>
+        <PagesContainer />
+        <DragOverlay dropAnimation={null}>
+          {dragginBarcode && dragginBarcode.type === "CODE_128" && (
+            <Barcode128 barcode={dragginBarcode} />
+          )}
+        </DragOverlay>
+      </DndContext>
     </div>
   );
 }
