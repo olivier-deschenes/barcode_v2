@@ -1,4 +1,3 @@
-import { GearIcon } from "@radix-ui/react-icons";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "../../../components/ui/button";
 import {
@@ -19,7 +18,7 @@ import {
 } from "../../../stores/barcodes";
 import React from "react";
 import { toast } from "sonner";
-import { PlusCircleIcon, PlusIcon, SaveIcon } from "lucide-react";
+import { PlusCircleIcon, SaveIcon } from "lucide-react";
 
 type Props = {
   barcode: BarcodeType;

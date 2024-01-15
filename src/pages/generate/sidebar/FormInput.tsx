@@ -1,10 +1,6 @@
 import React from "react";
 import { Textarea } from "../../../components/ui/textarea";
-import {
-  BarcodeType,
-  Code128Type,
-  useBarcodesStore,
-} from "../../../stores/barcodes";
+import { BarcodeType, useBarcodesStore } from "../../../stores/barcodes";
 
 export function FormInput() {
   const addBarcode = useBarcodesStore((s) => s.addBarcode);

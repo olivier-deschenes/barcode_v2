@@ -1,9 +1,7 @@
 import React from "react";
 import { PagesContainer } from "./barcode-pages/PagesContainer";
-import { Sidebar } from "./sidebar/Sidebar";
 import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core";
 import { BarcodeType, useBarcodesStore } from "../../stores/barcodes";
-import { BarcodeItem } from "./barcode-pages/Barcode";
 import { Barcode128 } from "./barcode-pages/barcodes/Barcode128";
 
 export function Generate() {
@@ -34,7 +32,7 @@ export function Generate() {
         "flex print:bg-transparent flex-1 container print:p-0 gap-8 print:gap-0 print:w-screen print:max-w-none"
       }
     >
-      <Sidebar />
+      {/* <Sidebar /> */}
       <DndContext onDragEnd={onDragEnd}>
         <PagesContainer />
         <DragOverlay dropAnimation={null}>

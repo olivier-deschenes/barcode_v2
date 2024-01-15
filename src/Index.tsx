@@ -1,9 +1,8 @@
 import { Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import React from "react";
 import { Toaster } from "./components/ui/sonner";
 
-function getContrastingTextColor(h: number, l: number, s: number): string {
+/* function getContrastingTextColor(h: number, l: number, s: number): string {
   // Calculate the relative luminance of the color
   const luminance = (0.299 * h + 0.587 * l + 0.114 * s) / 100;
 
@@ -13,8 +12,8 @@ function getContrastingTextColor(h: number, l: number, s: number): string {
   } else {
     return "0 0 100"; // White text for dark backgrounds
   }
-}
-
+} */
+/* 
 function getRandomHSLColor() {
   const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 360
   const saturation = Math.floor(Math.random() * 100); // Random saturation between 0 and 100
@@ -28,13 +27,13 @@ function getRandomHSLColor() {
     "--forground": textColor,
   };
 }
-
+ */
 export function Index() {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const style = React.useMemo(
+  /*  const style = React.useMemo(
     () => getRandomHSLColor() as React.CSSProperties,
     []
-  );
+  ); */
 
   return (
     <div

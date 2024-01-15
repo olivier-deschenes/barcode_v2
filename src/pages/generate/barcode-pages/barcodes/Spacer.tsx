@@ -1,8 +1,8 @@
 import React from "react";
-import { SpacerType, useBarcodesStore } from "../../../../stores/barcodes";
+import { SpacerType } from "../../../../stores/barcodes";
 import { twMerge } from "tailwind-merge";
 import { BarcodeModal } from "../BarcodeModal";
-import { PlusCircle, PlusCircleIcon } from "lucide-react";
+import { PlusCircleIcon } from "lucide-react";
 
 type Props = {
   spacer: SpacerType;
