@@ -40,9 +40,12 @@ export function BarcodeDraggable({ barcode }: Props) {
       </HoverCardTrigger>
       <HoverCardContent className="w-80" side={"top"}>
         <div className="flex justify-between space-x-4 flex-col">
+          <div className={"bg-red-400"}>
+            <h1>Barcode details</h1>
+          </div>
           <div>
             <div className={"flex items-center gap-5"}>
-              <Label>Title</Label>
+              <Label className={"w-1/3"}>Title</Label>
               <Input
                 type="text"
                 value={barcode.title ?? "N/A (Fallback to value)"}
@@ -50,7 +53,7 @@ export function BarcodeDraggable({ barcode }: Props) {
               />
             </div>
             <div className={"flex items-center gap-5"}>
-              <Label>Value</Label>
+              <Label className={"w-1/3"}>Value</Label>
               <Input type="text" value={barcode.value} disabled />
             </div>
           </div>
