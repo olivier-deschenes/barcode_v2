@@ -1,7 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import React from "react";
-import { useBarcodesStore } from "./stores/barcodes";
+import { Toaster } from "./components/ui/sonner";
 
 function getContrastingTextColor(h: number, l: number, s: number): string {
   // Calculate the relative luminance of the color
@@ -43,6 +43,7 @@ export function Index() {
       }
     >
       <Outlet />
+      <Toaster richColors theme={"light"} />
       <div className={"print:hidden"}>
         <TanStackRouterDevtools />
       </div>

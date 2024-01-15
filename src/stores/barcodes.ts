@@ -42,6 +42,12 @@ interface BarcodesState {
   getBarcodeFromId: (barcodeId: BarcodeType["id"]) => BarcodeType;
 
   swapBarcodes: (fromId: BarcodeType["id"], tooId: BarcodeType["id"]) => void;
+  modifyBarcode: (barcodeId: BarcodeType["id"], barcode: BarcodeType) => void;
+  deleteBarcode: (barcodeId: BarcodeType["id"]) => void;
+  addBarcodeToBarcodeId: (
+    barcode: BarcodeType,
+    barcodeId: BarcodeType["id"]
+  ) => void;
 
   reset: () => void;
 }
@@ -64,6 +70,8 @@ export const createBarcodePage = () => {
   return page;
 };
 
+export const MAX_TITLE_LENGTH = 25 as const;
+
 export const useBarcodesStore = create<BarcodesState>()(
   persist(
     (set, state) => {
@@ -74,6 +82,7 @@ export const useBarcodesStore = create<BarcodesState>()(
         addPage: (page) =>
           set((state) => ({
             pages: [...state.pages, page],
+            activePageId: page.id,
           })),
         activePageId: defaultPage.id,
         setActivePageId: (id) => set({ activePageId: id }),
@@ -194,6 +203,60 @@ export const useBarcodesStore = create<BarcodesState>()(
           const barcode = page.barcodes[barcodeIndex];
 
           return barcode;
+        },
+        modifyBarcode: (barcodeId, barcode) => {
+          set((state) => {
+            const { pageIndex, barcodeIndex } =
+              state.getIndexedFromId(barcodeId);
+
+            const pages = [...state.pages];
+            const page = pages[pageIndex];
+
+            page.barcodes[barcodeIndex] = barcode;
+
+            pages[pageIndex] = page;
+
+            return {
+              pages,
+            };
+          });
+        },
+        deleteBarcode: (barcodeId) => {
+          set((state) => {
+            const { pageIndex, barcodeIndex } =
+              state.getIndexedFromId(barcodeId);
+
+            const pages = [...state.pages];
+            const page = pages[pageIndex];
+
+            page.barcodes[barcodeIndex] = {
+              id: crypto.randomUUID(),
+              type: "SPACER",
+            };
+
+            pages[pageIndex] = page;
+
+            return {
+              pages,
+            };
+          });
+        },
+        addBarcodeToBarcodeId: (barcode, barcodeId) => {
+          set((state) => {
+            const { pageIndex, barcodeIndex } =
+              state.getIndexedFromId(barcodeId);
+
+            const pages = [...state.pages];
+            const page = pages[pageIndex];
+
+            page.barcodes[barcodeIndex] = barcode;
+
+            pages[pageIndex] = page;
+
+            return {
+              pages,
+            };
+          });
         },
       };
     },

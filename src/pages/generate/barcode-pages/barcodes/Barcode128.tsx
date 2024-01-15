@@ -9,13 +9,14 @@ export function Barcode128({ barcode }: Props) {
   const _id = React.useMemo(() => `BarCode-${barcode.id}`, [barcode.id]);
 
   React.useEffect(() => {
-    JsBarcode(`#${_id}`, barcode.value, {
+    JsBarcode(`#${_id}`, barcode.value || "x", {
       format: "CODE128",
       lineColor: "black",
       width: 2,
       displayValue: true,
+      text: barcode.title || "\n",
     });
-  }, [_id, barcode.value]);
+  }, [_id, barcode.title, barcode.value]);
 
   return (
     <div className={"scale-90"}>

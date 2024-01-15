@@ -1,6 +1,10 @@
 import React from "react";
 import { Textarea } from "../../../components/ui/textarea";
-import { BarcodeType, useBarcodesStore } from "../../../stores/barcodes";
+import {
+  BarcodeType,
+  Code128Type,
+  useBarcodesStore,
+} from "../../../stores/barcodes";
 
 export function FormInput() {
   const addBarcode = useBarcodesStore((s) => s.addBarcode);
@@ -9,16 +13,20 @@ export function FormInput() {
 
   const handleAddBarcode = () => {
     const lines = value.split("\n");
-    const barcodes: BarcodeType[] = lines.map((line) => {
+    const barcodes = lines.map((line) => {
       const data = line.split(":");
 
-      return {
+      const barcode: BarcodeType = {
         id: crypto.randomUUID(),
         type: "CODE_128",
         value: data[0],
-        label: data.length > 1 ? data[1] : undefined,
+        title: data.length > 1 ? data[1] : data[0],
       };
+
+      return barcode;
     });
+
+    console.log(barcodes);
 
     if (barcodes.length < 1) return;
 
