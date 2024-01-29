@@ -42,7 +42,7 @@ export function Index() {
       }
     >
       <Outlet />
-      <Toaster richColors theme={"light"} />
+      <Toaster richColors theme={"light"} className={"print:hidden"} />
       <div className={"print:hidden"}>
         <TanStackRouterDevtools />
       </div>

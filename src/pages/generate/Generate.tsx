@@ -3,6 +3,7 @@ import { PagesContainer } from "./barcode-pages/PagesContainer";
 import { DndContext, DragEndEvent, DragOverlay } from "@dnd-kit/core";
 import { BarcodeType, useBarcodesStore } from "../../stores/barcodes";
 import { Barcode128 } from "./barcode-pages/barcodes/Barcode128";
+import { Sidebar } from "./sidebar/Sidebar";
 
 export function Generate() {
   const swapBarcodes = useBarcodesStore((s) => s.swapBarcodes);
@@ -32,7 +33,7 @@ export function Generate() {
         "flex print:bg-transparent flex-1 container print:p-0 gap-8 print:gap-0 print:w-screen print:max-w-none"
       }
     >
-      {/* <Sidebar /> */}
+      <Sidebar />
       <DndContext onDragEnd={onDragEnd}>
         <PagesContainer />
         <DragOverlay dropAnimation={null}>
