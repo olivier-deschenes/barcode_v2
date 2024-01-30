@@ -22,8 +22,6 @@ export function FormInput() {
       return barcode;
     });
 
-    console.log(barcodes);
-
     if (barcodes.length < 1) return;
 
     addBarcode(barcodes[0]);
@@ -56,13 +54,14 @@ export function FormInput() {
   };
 
   return (
-    <div className={"w-full p-5"}>
+    <div className={"w-full"}>
       <form onSubmit={handleSubmit}>
         <Textarea
           onKeyDown={hanldeKeyDown}
           onChange={handleChange}
           placeholder={"Enter the barcodes ..."}
           value={value}
+          rows={20}
         ></Textarea>
       </form>
     </div>

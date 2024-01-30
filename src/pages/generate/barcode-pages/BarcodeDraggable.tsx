@@ -1,5 +1,5 @@
 import React from "react";
-import { useDraggable } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { Barcode128 } from "./barcodes/Barcode128";
 import { Cross2Icon, GearIcon } from "@radix-ui/react-icons";
 import { Code128Type, useBarcodesStore } from "../../../stores/barcodes";
@@ -27,7 +27,16 @@ export function BarcodeDraggable({ barcode }: Props) {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  const { attributes, listeners, setNodeRef } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef: draggableRef,
+  } = useDraggable({
+    id: barcode.id,
+    data: barcode,
+  });
+
+  const { setNodeRef: droppableRef } = useDroppable({
     id: barcode.id,
     data: barcode,
   });
@@ -50,17 +59,20 @@ export function BarcodeDraggable({ barcode }: Props) {
 
   return (
     <div
-      className={"flex justify-center items-center p-5 rounded relative"}
+      className={
+        "flex justify-center items-center p-5 rounded relative cursor-grab"
+      }
       style={{
         width: "calc(100% - 2.5rem)",
         height: "calc(100% - 2.5rem)",
       }}
       onMouseEnter={handleMenuOpen}
       onMouseLeave={handleMenuClose}
+      ref={droppableRef}
     >
       <div
         className={twMerge(
-          "absolute top-0 right-0 flex gap-3",
+          "absolute top-0 right-0 flex gap-3 z-50 print:hidden",
           !menuOpen && "hidden"
         )}
       >
@@ -93,10 +105,10 @@ export function BarcodeDraggable({ barcode }: Props) {
         </AlertDialog>
       </div>
       <button
-        ref={setNodeRef}
+        ref={draggableRef}
         {...listeners}
         {...attributes}
-        className={"max-w-full overflow-hidden"}
+        className={"max-w-full overflow-hidden cursor-grab"}
       >
         <Barcode128 barcode={barcode} />
       </button>

@@ -9,7 +9,7 @@ export function Sidebar() {
   return (
     <div
       className={
-        "flex flex-col w-1/3 print:hidden h-screen sticky top-0 items-center gap-5 shadow-lg justify-between py-5"
+        "flex flex-col w-1/3 print:hidden bg-secondary h-screen sticky top-0 items-center gap-5 shadow-lg justify-between p-5"
       }
     >
       <Header />

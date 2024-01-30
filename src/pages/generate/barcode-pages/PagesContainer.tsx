@@ -42,7 +42,7 @@ export function PagesContainer() {
   return (
     <div
       className={
-        "flex flex-col gap-8 print:gap-0 snap-y snap-mandatory scroll-smooth relative "
+        "flex flex-col gap-8 print:gap-0 snap-y snap-mandatory scroll-smooth relative"
       }
       ref={pageContainerRef}
     >
@@ -53,7 +53,6 @@ export function PagesContainer() {
         className={
           "absolute left-1/2 transform -translate-x-1/2 bottom-0 flex gap-2.5 justify-center items-center my-5 print:hidden"
         }
-        variant={"outline"}
         onClick={() => addPage(createBarcodePage())}
       >
         Add a page
