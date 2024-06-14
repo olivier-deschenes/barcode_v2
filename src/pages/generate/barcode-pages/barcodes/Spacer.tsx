@@ -11,8 +11,6 @@ type Props = {
 
 export const Spacer = React.forwardRef<HTMLDivElement, Props>(
   ({ spacer, isOver }, ref) => {
-    const overStyle = "border-foreground bg-foreground";
-
     return (
       <div className={"h-full w-full flex m-5 p-10 select-none"}>
         <BarcodeModal barcode={spacer}>
