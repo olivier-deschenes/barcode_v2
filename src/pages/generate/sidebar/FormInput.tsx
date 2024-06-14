@@ -1,6 +1,8 @@
 import React from "react";
 import { Textarea } from "../../../components/ui/textarea";
 import { BarcodeType, useBarcodesStore } from "../../../stores/barcodes";
+import { Button } from "../../../components/ui/button";
+import { KeyboardKey } from "../../../components/KeyboardKey";
 
 export function FormInput() {
   const addBarcode = useBarcodesStore((s) => s.addBarcode);
@@ -54,8 +56,8 @@ export function FormInput() {
   };
 
   return (
-    <div className={"w-full"}>
-      <form onSubmit={handleSubmit}>
+    <div className={"w-full p-7 shadow-lg rounded-lg"}>
+      <form onSubmit={handleSubmit} className={"flex gap-7 flex-col"}>
         <Textarea
           onKeyDown={hanldeKeyDown}
           onChange={handleChange}
@@ -63,6 +65,11 @@ export function FormInput() {
           value={value}
           rows={20}
         ></Textarea>
+        <div className={"flex"}>
+          <div className={"ml-auto select-none"}>
+            Press <KeyboardKey>Enter</KeyboardKey> to add the barcode
+          </div>
+        </div>
       </form>
     </div>
   );

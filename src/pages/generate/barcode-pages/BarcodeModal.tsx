@@ -106,11 +106,6 @@ export function BarcodeModal({
           <DialogTitle>
             {isAddBarcode ? "Add barcode" : "Edit barcode"}
           </DialogTitle>
-          <DialogDescription>
-            {isAddBarcode
-              ? "Add a barcode to your label"
-              : "Edit your barcode's title and value"}
-          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">

@@ -11,23 +11,25 @@ type Props = {
 
 export const Spacer = React.forwardRef<HTMLDivElement, Props>(
   ({ spacer, isOver }, ref) => {
+    const overStyle = "border-foreground bg-foreground";
+
     return (
       <div className={"h-full w-full flex m-5 p-10 select-none"}>
         <BarcodeModal barcode={spacer}>
           <div
             className={twMerge(
-              "border-foreground/10 border-4 cursor-pointer print:hidden flex w-full h-full justify-center items-center rounded-xl hover:border-foreground/50 hover:bg-foreground/10 flex-col",
-              isOver && "border-foreground/50 bg-foreground/10"
+              "border-2 cursor-pointer print:hidden flex w-full h-full justify-center items-center rounded-xl flex-col",
+              "border-primary/50 hover:border-foreground/50 hover:bg-foreground/10",
+              isOver && "border-primary bg-primary/10"
             )}
             ref={ref}
           >
             <div
               className={
-                "text-foreground/40 font-bold flex gap-2 items-center justify-center"
+                "text-foreground/40 font-bold flex gap-2 items-center justify-center "
               }
             >
-              <PlusCircleIcon />
-              <span>Add barcode</span>
+              <PlusCircleIcon className={"text-primary"} />
             </div>
           </div>
         </BarcodeModal>
